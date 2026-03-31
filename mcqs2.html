@@ -1,0 +1,1126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCQ → PDF | By Wondermayank</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0d0d0d;
+    --ink-2: #333;
+    --ink-3: #666;
+    --paper: #ffffff;
+    --surface: #f5f5f3;
+    --border: #e0e0dc;
+    --accent: #1a1a1a;
+    --thunder: #2563eb;
+    --thunder-light: #eff6ff;
+    --correct: #16a34a;
+    --radius: 12px;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    background: var(--paper);
+    border-bottom: 1.5px solid var(--border);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .logo-icon {
+    width: 32px; height: 32px;
+    background: var(--ink);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 800;
+  }
+  .badge {
+    background: var(--thunder-light);
+    color: var(--thunder);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1px solid #bfdbfe;
+  }
+
+  .app {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 0;
+    flex: 1;
+    min-height: calc(100vh - 60px);
+  }
+
+  .panel-left {
+    background: var(--paper);
+    border-right: 1.5px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .panel-section {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .panel-section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--ink-3);
+  }
+
+  .input-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+  .input-group label { font-size: 0.82rem; font-weight: 600; color: var(--ink-2); }
+
+  input[type="text"], textarea, select {
+    width: 100%;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.875rem;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+    resize: none;
+  }
+  input[type="text"]:focus, textarea:focus, select:focus {
+    border-color: var(--ink);
+    background: var(--paper);
+  }
+  textarea { min-height: 180px; font-size: 0.8rem; line-height: 1.6; }
+
+  .format-help {
+    background: #fafaf8;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.75rem;
+    color: var(--ink-3);
+    line-height: 1.7;
+    font-family: 'DM Mono', monospace;
+  }
+  .format-help strong { color: var(--ink-2); display: block; margin-bottom: 4px; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+  }
+  .btn-primary { background: var(--ink); color: white; width: 100%; padding: 13px; }
+  .btn-primary:hover { background: #333; }
+  .btn-secondary { background: var(--thunder); color: white; width: 100%; padding: 13px; }
+  .btn-secondary:hover { background: #1d4ed8; }
+  .btn-ghost { background: var(--surface); color: var(--ink-2); border: 1.5px solid var(--border); font-size: 0.8rem; padding: 8px 14px; }
+  .btn-ghost:hover { background: var(--border); }
+  .btn-row { display: flex; flex-direction: column; gap: 10px; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 4px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px; text-align: center; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--ink); }
+  .stat-lbl { font-size: 0.65rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
+
+  .panel-right { background: #e8e8e4; display: flex; flex-direction: column; overflow: hidden; }
+
+  .preview-bar {
+    background: var(--paper);
+    border-bottom: 1.5px solid var(--border);
+    padding: 0 1.5rem;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .preview-bar-title { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--ink-3); letter-spacing: 0.08em; text-transform: uppercase; }
+  .page-nav { display: flex; align-items: center; gap: 10px; }
+  .page-nav button {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    font-size: 0.75rem;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-2);
+    transition: all 0.1s;
+  }
+  .page-nav button:hover:not(:disabled) { background: var(--ink); color: white; border-color: var(--ink); }
+  .page-nav button:disabled { opacity: 0.3; cursor: default; }
+  .page-nav span { font-size: 0.8rem; color: var(--ink-2); font-weight: 500; min-width: 70px; text-align: center; }
+
+  .preview-scroll { flex: 1; overflow-y: auto; padding: 2rem; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+
+  .preview-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--ink-3); text-align: center; gap: 12px; }
+  .preview-empty svg { opacity: 0.3; }
+  .preview-empty p { font-size: 0.9rem; }
+
+  .pdf-page {
+    background: white;
+    width: 794px;
+    min-height: 1123px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.08);
+    border-radius: 2px;
+    position: relative;
+    padding: 60px 60px 80px 60px;
+    flex-shrink: 0;
+    display: none;
+  }
+  .pdf-page.active { display: block; }
+
+  .pdf-page-header { border-bottom: 2px solid #0d0d0d; padding-bottom: 14px; margin-bottom: 28px; }
+  .pdf-page-title { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; color: #0d0d0d; margin-bottom: 3px; }
+  .pdf-page-meta { font-size: 0.75rem; color: #666; display: flex; gap: 16px; }
+  .pdf-page-meta span::before { content: '· '; }
+  .pdf-page-meta span:first-child::before { content: ''; }
+
+  /* ── Section divider in preview ── */
+  .section-divider {
+    margin: 18px 0 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-divider-line {
+    flex: 1;
+    height: 1.5px;
+    background: #d1d5db;
+  }
+  .section-divider-text {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: #6b7280;
+    white-space: nowrap;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .mcq-item { margin-bottom: 20px; page-break-inside: avoid; }
+  .mcq-q { font-size: 0.875rem; font-weight: 600; color: #0d0d0d; line-height: 1.5; margin-bottom: 8px; }
+  .mcq-options { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px; margin-left: 4px; }
+  .mcq-opt { font-size: 0.82rem; color: #333; line-height: 1.5; padding: 1px 0; }
+  .mcq-answer { display: inline-flex; align-items: center; gap: 5px; margin-top: 6px; font-size: 0.75rem; font-weight: 600; color: #16a34a; margin-left: 4px; }
+
+  .pdf-footer { position: absolute; bottom: 28px; left: 60px; right: 60px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #e0e0dc; padding-top: 10px; }
+  .pdf-footer-brand { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: #999; font-weight: 500; }
+  .pdf-footer-page { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: #999; font-weight: 500; }
+
+  .toggle-row { display: flex; align-items: center; gap: 10px; }
+  .toggle { position: relative; width: 36px; height: 20px; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider { position: absolute; inset: 0; background: var(--border); border-radius: 20px; cursor: pointer; transition: 0.2s; }
+  .toggle-slider::before { content: ''; position: absolute; width: 14px; height: 14px; left: 3px; top: 3px; border-radius: 50%; background: white; transition: 0.2s; }
+  .toggle input:checked + .toggle-slider { background: var(--ink); }
+  .toggle input:checked + .toggle-slider::before { transform: translateX(16px); }
+  .toggle-label { font-size: 0.83rem; font-weight: 500; color: var(--ink-2); }
+
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--ink); color: white; padding: 10px 20px; border-radius: 30px; font-size: 0.83rem; font-weight: 500; transition: transform 0.3s ease; z-index: 1000; white-space: nowrap; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ─── FORMAT TABS ─── */
+  .fmt-tabs { display: flex; gap: 6px; margin-bottom: 10px; background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; padding: 4px; }
+  .fmt-tab { flex: 1; padding: 7px 10px; border-radius: 7px; border: none; background: transparent; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.78rem; font-weight: 600; color: var(--ink-3); cursor: pointer; transition: all 0.15s; }
+  .fmt-tab.active { background: var(--ink); color: white; }
+  .fmt-tab:not(.active):hover { background: var(--border); color: var(--ink); }
+  .format-help code { background: #e8e8e4; border-radius: 3px; padding: 1px 4px; font-size: 0.72rem; font-family: 'DM Mono', monospace; color: var(--ink-2); }
+
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+    .panel-right { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#">
+    <div class="logo-icon">⚡</div>
+    MCQS CONVERTER BY WONDERMAYANK
+  </a>
+  <span class="badge">MCQ → PDF</span>
+</header>
+
+<div class="app">
+
+  <div class="panel-left">
+    <div class="panel-section">
+      <div class="section-label">Test Details</div>
+      <div class="input-group">
+        <label>Test Title</label>
+        <input type="text" id="testTitle" placeholder="e.g. Business Studies — Unit 1" value="Nature and Significance of Management">
+      </div>
+      <div class="row-2">
+        <div class="input-group">
+          <label>Subject</label>
+          <input type="text" id="subject" placeholder="e.g. Business Studies" value="Business Studies">
+        </div>
+        <div class="input-group">
+          <label>Class / Exam</label>
+          <input type="text" id="classExam" placeholder="e.g. Class 12 CBSE" value="Class 12 CBSE">
+        </div>
+      </div>
+      <div class="row-2">
+        <div class="input-group">
+          <label>Time Allowed</label>
+          <input type="text" id="timeAllowed" placeholder="e.g. 30 minutes" value="30 minutes">
+        </div>
+        <div class="input-group">
+          <label>Max Marks</label>
+          <input type="text" id="maxMarks" placeholder="e.g. 15" value="15">
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="section-label">Questions Input</div>
+
+      <!-- FORMAT TABS -->
+      <div class="fmt-tabs">
+        <button class="fmt-tab active" id="tabStd"  onclick="switchFormat('standard')">Standard</button>
+        <button class="fmt-tab"        id="tabBold" onclick="switchFormat('bold')">Bold / AI</button>
+        <button class="fmt-tab"        id="tabAuto" onclick="switchFormat('auto')">⚡ Auto Mix</button>
+      </div>
+
+      <!-- Standard help -->
+      <div class="format-help" id="helpStd">
+        <strong>Standard format (Q prefix, lowercase options):</strong>
+        Q1. Question text<br>
+        a) Option A &nbsp;&nbsp; b) Option B<br>
+        c) Option C &nbsp;&nbsp; d) Option D<br>
+        Answer: b) Option B &nbsp;(or *Answer:* **b) Option B**)<br><br>
+        <strong>Section headings are supported:</strong>
+        ### Nature and Significance of Management
+      </div>
+
+      <!-- Bold / AI help -->
+      <div class="format-help" id="helpBold" style="display:none;">
+        <strong>Bold/AI format — numbered, any option style, any answer style:</strong>
+        **1. Question text**<br>
+        (A) Option A &nbsp;&nbsp; (B) Option B &nbsp;&nbsp; (1) Opt 1 &nbsp;&nbsp; (2) Opt 2<br>
+        **Answer: (A) Management** &nbsp;or&nbsp; **Answer: (1) Rule** &nbsp;or&nbsp; **Answer: B**<br><br>
+        <strong>Section headings like ### **Title** are shown as dividers.</strong>
+      </div>
+
+      <!-- Auto / Mixed help -->
+      <div class="format-help" id="helpAuto" style="display:none;">
+        <strong>⚡ Auto Mix — detects every format automatically.</strong>
+        Handles all styles together in one paste:<br>
+        <span style="color:#2563eb;">①</span> <strong>Bold+Letter</strong> — <code>**1. Q**</code> · (A)(B)(C)(D) · <code>**Answer: (A) text**</code><br>
+        <span style="color:#2563eb;">②</span> <strong>Standard</strong> — <code>Q1. Q</code> · a) b) c) d) · <code>*Answer:* **b) text**</code><br>
+        <span style="color:#2563eb;">③</span> <strong>Numeric</strong> — <code>**1. Q**</code> · (1)(2)(3)(4) · <code>**Answer: (1) text**</code><br>
+        <span style="color:#2563eb;">④</span> <strong>Section headings</strong> — <code>### Title</code> or <code>### **Title**</code> → shown as dividers
+      </div>
+
+      <textarea id="mcqInput" style="margin-top:10px;" placeholder="Paste your MCQs here..."></textarea>
+    </div>
+
+    <div class="panel-section">
+      <div class="section-label">Options</div>
+      <div class="toggle-row" style="margin-bottom:12px;">
+        <label class="toggle">
+          <input type="checkbox" id="showAnswers" checked>
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="toggle-label">Include answer key</span>
+      </div>
+      <div class="input-group">
+        <label>Questions per page</label>
+        <select id="qPerPage">
+          <option value="5">5 questions / page</option>
+          <option value="8" selected>8 questions / page</option>
+          <option value="10">10 questions / page</option>
+          <option value="15">15 questions / page</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="section-label">Stats</div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-num" id="statQ">0</div>
+          <div class="stat-lbl">Questions</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statP">0</div>
+          <div class="stat-lbl">Pages</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statA">0</div>
+          <div class="stat-lbl">Answers</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="generatePreview()">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Preview PDF
+        </button>
+        <button class="btn btn-secondary" onclick="downloadPDF()">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download PDF
+        </button>
+        <button class="btn btn-ghost" onclick="loadSample()">Load sample MCQs</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-right">
+    <div class="preview-bar">
+      <span class="preview-bar-title">PDF Preview</span>
+      <div class="page-nav">
+        <button id="prevBtn" onclick="changePage(-1)" disabled>‹</button>
+        <span id="pageIndicator">— / —</span>
+        <button id="nextBtn" onclick="changePage(1)" disabled>›</button>
+      </div>
+    </div>
+
+    <div class="preview-scroll" id="previewScroll">
+      <div class="preview-empty" id="emptyState">
+        <svg width="64" height="64" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+        <p>Paste your MCQs and click<br><strong>Preview PDF</strong> to see the result</p>
+      </div>
+      <div id="pagesContainer"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════
+//  SAMPLE DATA
+// ══════════════════════════════════════════════════
+const SAMPLE_STANDARD = `### **Nature and Significance of Management**
+
+**Q1. Which of the following terms refers to completing a task correctly and with minimum cost?**
+a) Effectiveness
+b) Efficiency
+c) Planning
+d) Coordination
+*Answer:* **b) Efficiency**
+
+**Q2. The goal of a retail store may be to increase sales, whereas the goal of The Spastics Society of India is to impart education to children with special needs. This illustrates which characteristic of management?**
+a) Management is all pervasive
+b) Management is a dynamic function
+c) Management is a goal-oriented process
+d) Management is a continuous process
+*Answer:* **c) Management is a goal-oriented process**
+
+### **Planning**
+
+**Q3. McDonald's made major changes in its menu to survive in the Indian market. Which characteristic of management does this highlight?**
+a) Management is a dynamic function
+b) Management is an intangible force
+c) Management is a continuous process
+d) Management is multidimensional
+*Answer:* **a) Management is a dynamic function**
+
+**Q4. What are the primary economic objectives of any business organisation?**
+a) Profit, Innovation, and Expansion
+b) Survival, Profit, and Growth
+c) Effectiveness, Efficiency, and Coordination
+d) Planning, Organising, and Controlling
+*Answer:* **b) Survival, Profit, and Growth**
+
+**Q5. Why is management often considered an "inexact science"?**
+a) Because its principles are not based on experimentation
+b) Because it does not have a systematised body of knowledge
+c) Because it deals with human beings whose behaviour is difficult to predict
+d) Because it relies solely on personal creativity
+*Answer:* **c) Because it deals with human beings whose behaviour is difficult to predict**`;
+
+const SAMPLE_BOLD = `### **Principles of Management**
+
+**1. Assertion (A): Through planning, the uncertain events or changes can be anticipated and eliminated.**
+**Reason (R): Planning reduces the risks of uncertainty.**
+A) Both A and R are true and R is the correct explanation of A
+B) Both A and R are true and R is not the correct explanation of A
+C) A is true but R is false
+D) A is false but R is true
+**Answer: D**
+
+**2. Assertion (A): A plan is framed; it is implemented and is followed by another plan, and so on.**
+**Reason (R): Planning is a continuous process.**
+A) Both A and R are true and R is the correct explanation of A
+B) Both A and R are true and R is not the correct explanation of A
+C) A is true but R is false
+D) A is false but R is true
+**Answer: A**
+
+### **Business Environment**
+
+**3. Plans are made for a specific time period. At the end of such time period, new plans have to be drawn. Identify the feature of planning.**
+A) Planning is pervasive
+B) Planning is futuristic
+C) Planning involves decision-making
+D) Planning is continuous
+**Answer: D**
+
+**4. Planning is known as:**
+A) The last function of the manager
+B) Primary/First function of the manager
+C) Both a) and b)
+D) None of the options is correct
+**Answer: B**
+
+**5. Which of these is a limitation of planning?**
+A) Planning may not work in the dynamic environment
+B) Planning reduces creativity
+C) Planning is a time consuming process
+D) Planning does not guarantee success
+**Answer: A**`;
+
+const SAMPLE_AUTO = `### **Nature and Significance of Management**
+
+**1. Successful organisations do not achieve goals by chance but by following a deliberate process known as:**
+(A) Management
+(B) Planning
+(C) Coordination
+(D) Controlling
+**Answer: (A) Management**
+
+**2. Management is described as an art because it involves the application of skills and:**
+(A) Scientific ideas
+(B) Traditional methods
+(C) Innovative ideas
+(D) Theoretical concepts
+**Answer: (C) Innovative ideas**
+
+### **Planning**
+
+**Q3. Planning is a never-ending process because after making plans, one has to keep in touch with the changing environment. This shows that planning is:**
+a) Futuristic
+b) Continuous
+c) Goal-oriented
+d) Pervasive
+*Answer:* **b) Continuous**
+
+### **Financial Management**
+
+**4. Which specific plan states a definite action to be taken or not to be taken?**
+(1) Rule
+(2) Policy
+(3) Strategy
+(4) Procedure
+**Answer: (1) Rule**
+
+**5. Staffing is a continuous process because:**
+(1) It involves setting goals.
+(2) New jobs are created and employees may leave.
+(3) It involves arranging resources.
+(4) It focuses on internal strategies.
+**Answer: (2) New jobs are created and employees may leave**`;
+
+// ══════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════
+let parsedItems  = [];   // mix of {type:'question',...} and {type:'section', title:'...'}
+let currentPage  = 0;
+let totalPages   = 0;
+let activeFormat = 'standard';
+
+// ══════════════════════════════════════════════════
+//  FORMAT SWITCHER
+// ══════════════════════════════════════════════════
+function switchFormat(fmt) {
+  activeFormat = fmt;
+  document.getElementById('tabStd').classList.toggle('active',  fmt === 'standard');
+  document.getElementById('tabBold').classList.toggle('active', fmt === 'bold');
+  document.getElementById('tabAuto').classList.toggle('active', fmt === 'auto');
+  document.getElementById('helpStd').style.display  = fmt === 'standard' ? '' : 'none';
+  document.getElementById('helpBold').style.display = fmt === 'bold'     ? '' : 'none';
+  document.getElementById('helpAuto').style.display = fmt === 'auto'     ? '' : 'none';
+}
+
+// ══════════════════════════════════════════════════
+//  SHARED HELPERS
+// ══════════════════════════════════════════════════
+function stripMD(str) {
+  if (!str) return '';
+  return str
+    .replace(/\*\*([^*]*)\*\*/g, '$1')
+    .replace(/\*([^*]*)\*/g, '$1')
+    .replace(/_{2}([^_]*)_{2}/g, '$1')
+    .replace(/_([^_]*)_/g, '$1')
+    .replace(/[*_`]+/g, '')
+    .replace(/,\s*$/, '')
+    .replace(/\.\s*$/, '')
+    .trim();
+}
+
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ══════════════════════════════════════════════════
+//  SECTION HEADING DETECTOR
+//  Matches: ### Title  or  ### **Title**  or  **### Title**
+// ══════════════════════════════════════════════════
+function detectSectionHeading(line) {
+  const t = line.trim();
+  // e.g. ### **Entrepreneurship and Strategy** or ### Nature of Management
+  const m = t.match(/^\*{0,2}#{1,4}\s+\*{0,2}(.+?)\*{0,2}$/);
+  if (m) return stripMD(m[1]).trim();
+  return null;
+}
+
+// ══════════════════════════════════════════════════
+//  CORE UNIVERSAL PARSER  v4
+//  Now returns mixed array of question + section items
+// ══════════════════════════════════════════════════
+const NUM_TO_LETTER = { '1':'A','2':'B','3':'C','4':'D' };
+
+function blockUsesNumericOptions(lines) {
+  for (const l of lines) {
+    const t = l.trim();
+    if (isQuestionStart(t)) continue;
+    const s = t.replace(/^[\*\-\•]\s*/,'');
+    if (/^\(?[1-4]\)?[\.\)]\s+\S/.test(s)) return true;
+  }
+  return false;
+}
+
+function parseLetterOption(t) {
+  const s = t.replace(/^[\*\-\•]\s*/,'').trim();
+  const m = s.match(/^\(?([A-Da-d])\)?[\.\)]\s+(.+)/);
+  if (m) return { letter: m[1].toUpperCase(), text: stripMD(m[2]) };
+  return null;
+}
+
+function parseNumericOption(t) {
+  const s = t.replace(/^[\*\-\•]\s*/,'').trim();
+  const m = s.match(/^\(?([1-4])\)?[\.\)]\s+(.+)/);
+  if (m) return { letter: NUM_TO_LETTER[m[1]], text: stripMD(m[2]) };
+  return null;
+}
+
+function parseAnswerLine(t) {
+  const clean = t.replace(/^\*{1,2}/, '').replace(/\*{1,2}$/, '').trim();
+  if (!/^Ans/i.test(clean)) return null;
+  const rest = clean.replace(/^Ans(?:wer)?\s*[:\-]?\s*/i, '').replace(/^\*{1,2}/, '').trim();
+  const numM = rest.match(/^\(?([1-4])\)?[\.\)]?\s*(.*)/);
+  if (numM) return { letter: NUM_TO_LETTER[numM[1]], extra: stripMD(numM[2] || '') };
+  const letM = rest.match(/^\(?([A-Da-d])\)?[\.\)]?\s*(.*)/);
+  if (letM) return { letter: letM[1].toUpperCase(), extra: stripMD(letM[2] || '') };
+  return null;
+}
+
+function isQuestionStart(t) {
+  if (/^\*{0,2}Q\d+[\.\)]/i.test(t)) return true;
+  if (/^\*{1,2}\s*\d+[\.\)]\s/.test(t)) return true;
+  if (/^\d+[\.\)]\s+\S/.test(t) &&
+      !/^\d+[\.\)]\s*[\(\*]?[A-Da-d1-4][\.\)\s]/.test(t) &&
+      !/^\*{0,2}Ans/i.test(t) &&
+      !/^\([1-4]\)/.test(t)) return true;
+  return false;
+}
+
+function parseUniversal(raw) {
+  const items = [];          // final mixed array
+  const lines = raw.split('\n');
+
+  // ── STEP 1: Split into segments — either section headings or question blocks ──
+  const segments = [];  // each: { type: 'section'|'block', data }
+  let cur = [];
+
+  for (const line of lines) {
+    const t = line.trim();
+
+    // Check if this line is a section heading
+    const headingTitle = detectSectionHeading(t);
+    if (headingTitle) {
+      if (cur.length > 0) { segments.push({ type: 'block', lines: cur }); cur = []; }
+      segments.push({ type: 'section', title: headingTitle });
+      continue;
+    }
+
+    if (isQuestionStart(t) && cur.length > 0) {
+      segments.push({ type: 'block', lines: cur });
+      cur = [];
+    }
+    cur.push(line);
+  }
+  if (cur.length > 0) segments.push({ type: 'block', lines: cur });
+
+  // ── STEP 2: Process each segment ──
+  let qCount = 0;
+
+  for (const seg of segments) {
+    if (seg.type === 'section') {
+      items.push({ type: 'section', title: seg.title });
+      continue;
+    }
+
+    // Parse question block
+    const blockLines = seg.lines.filter(l => l.trim());
+    if (!blockLines.length) continue;
+
+    const useNumeric = blockUsesNumericOptions(blockLines);
+    const qTextLines = [];
+    const options    = [];
+    let answerLetter = '';
+    let answerExtra  = '';
+    let inQuestion   = true;
+
+    for (const line of blockLines) {
+      const t = line.trim();
+      const ansResult = parseAnswerLine(t);
+      if (ansResult) {
+        answerLetter = ansResult.letter;
+        answerExtra  = ansResult.extra;
+        inQuestion   = false;
+        continue;
+      }
+      const optResult = useNumeric ? parseNumericOption(t) : parseLetterOption(t);
+      if (optResult) {
+        if (!options.find(o => o.letter === optResult.letter)) options.push(optResult);
+        inQuestion = false;
+        continue;
+      }
+      if (inQuestion === false && options.length === 0) {
+        const fallback = parseLetterOption(t) || parseNumericOption(t);
+        if (fallback) { options.push(fallback); continue; }
+      }
+      if (inQuestion) qTextLines.push(t);
+    }
+
+    if (!qTextLines.length || options.length === 0) continue;
+
+    const rawQ  = qTextLines.join(' ');
+    const qClean = stripMD(rawQ).replace(/^Q?\s*\d+[\.\)]\s*/i, '').trim();
+    if (!qClean) continue;
+
+    qCount++;
+    let answer = '';
+    if (answerLetter) {
+      if (answerExtra) {
+        answer = `${answerLetter}) ${answerExtra}`;
+      } else {
+        const matched = options.find(o => o.letter === answerLetter);
+        answer = matched ? `${answerLetter}) ${matched.text}` : `${answerLetter})`;
+      }
+    }
+
+    items.push({ type: 'question', num: String(qCount), q: qClean, options, answer });
+  }
+
+  return items;
+}
+
+// ══════════════════════════════════════════════════
+//  DISPATCHER
+// ══════════════════════════════════════════════════
+function parseMCQs(raw) { return parseUniversal(raw); }
+
+// ══════════════════════════════════════════════════
+//  LOAD SAMPLE
+// ══════════════════════════════════════════════════
+function loadSample() {
+  const map = { standard: SAMPLE_STANDARD, bold: SAMPLE_BOLD, auto: SAMPLE_AUTO };
+  document.getElementById('mcqInput').value = map[activeFormat] || SAMPLE_STANDARD;
+  generatePreview();
+  showToast('Sample MCQs loaded!');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ══════════════════════════════════════════════════
+//  CHUNKING — split mixed items into pages
+//  Sections don't count toward the qPerPage limit
+//  but travel with the question that follows them
+// ══════════════════════════════════════════════════
+function chunkItems(items, qPerPage) {
+  const pages = [];
+  let page = [];
+  let qOnPage = 0;
+
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+
+    if (item.type === 'section') {
+      // If this section would start a new page anyway, or page is full, push section to current page
+      // (it will naturally flow with next question)
+      page.push(item);
+      continue;
+    }
+
+    // It's a question
+    if (qOnPage >= qPerPage) {
+      pages.push(page);
+      page = [];
+      qOnPage = 0;
+    }
+    page.push(item);
+    qOnPage++;
+  }
+
+  if (page.length > 0) pages.push(page);
+
+  // Remove pages that only contain sections (no questions) — merge them into next page
+  const cleaned = [];
+  for (let i = 0; i < pages.length; i++) {
+    const hasQ = pages[i].some(it => it.type === 'question');
+    if (!hasQ && i + 1 < pages.length) {
+      pages[i + 1] = [...pages[i], ...pages[i + 1]];
+    } else if (pages[i].length > 0) {
+      cleaned.push(pages[i]);
+    }
+  }
+
+  return cleaned;
+}
+
+// ══════════════════════════════════════════════════
+//  BUILD PREVIEW PAGE
+// ══════════════════════════════════════════════════
+function buildPage(pageItems, pageNum, totalPagesCount, title, meta, showAns) {
+  const div = document.createElement('div');
+  div.className = 'pdf-page';
+  div.dataset.page = pageNum;
+
+  let headerHTML = '';
+  if (pageNum === 1) {
+    headerHTML = `
+      <div class="pdf-page-header">
+        <div class="pdf-page-title">${escapeHTML(title)}</div>
+        <div class="pdf-page-meta">
+          <span>${escapeHTML(meta.subject)}</span>
+          <span>${escapeHTML(meta.classExam)}</span>
+          <span>Time: ${escapeHTML(meta.time)}</span>
+          <span>Max Marks: ${escapeHTML(meta.marks)}</span>
+        </div>
+      </div>`;
+  }
+
+  let bodyHTML = '';
+  for (const item of pageItems) {
+    if (item.type === 'section') {
+      bodyHTML += `
+        <div class="section-divider">
+          <div class="section-divider-line"></div>
+          <span class="section-divider-text">${escapeHTML(item.title)}</span>
+          <div class="section-divider-line"></div>
+        </div>`;
+      continue;
+    }
+
+    // Question
+    const opts = item.options.map(o =>
+      `<div class="mcq-opt"><strong>${o.letter})</strong> ${escapeHTML(o.text)}</div>`
+    ).join('');
+    const ansHTML = showAns && item.answer
+      ? `<div class="mcq-answer">✓ ${escapeHTML(item.answer)}</div>` : '';
+
+    bodyHTML += `
+      <div class="mcq-item">
+        <div class="mcq-q"><strong>Q${item.num}.</strong> ${escapeHTML(item.q)}</div>
+        <div class="mcq-options">${opts}</div>
+        ${ansHTML}
+      </div>`;
+  }
+
+  div.innerHTML = `
+    ${headerHTML}
+    ${bodyHTML}
+    <div class="pdf-footer">
+      <span class="pdf-footer-brand">@thunderstudy</span>
+      <span class="pdf-footer-page">Page ${pageNum} of ${totalPagesCount}</span>
+    </div>`;
+
+  return div;
+}
+
+// ══════════════════════════════════════════════════
+//  GENERATE PREVIEW
+// ══════════════════════════════════════════════════
+function generatePreview() {
+  const raw = document.getElementById('mcqInput').value.trim();
+  if (!raw) { showToast('Please paste some MCQs first!'); return; }
+
+  parsedItems = parseMCQs(raw);
+
+  const questions = parsedItems.filter(i => i.type === 'question');
+  if (questions.length === 0) { showToast('No questions detected. Check the format.'); return; }
+
+  const qPerPage  = parseInt(document.getElementById('qPerPage').value);
+  const showAns   = document.getElementById('showAnswers').checked;
+  const title     = document.getElementById('testTitle').value || 'MCQ Test';
+  const meta = {
+    subject:   document.getElementById('subject').value || '',
+    classExam: document.getElementById('classExam').value || '',
+    time:      document.getElementById('timeAllowed').value || '',
+    marks:     document.getElementById('maxMarks').value || ''
+  };
+
+  const chunks = chunkItems(parsedItems, qPerPage);
+  totalPages = chunks.length;
+
+  const answersFound = questions.filter(q => q.answer).length;
+  document.getElementById('statQ').textContent = questions.length;
+  document.getElementById('statP').textContent = totalPages;
+  document.getElementById('statA').textContent = answersFound;
+
+  const container = document.getElementById('pagesContainer');
+  container.innerHTML = '';
+  document.getElementById('emptyState').style.display = 'none';
+
+  for (let i = 0; i < chunks.length; i++) {
+    const page = buildPage(chunks[i], i + 1, totalPages, title, meta, showAns);
+    container.appendChild(page);
+  }
+
+  currentPage = 1;
+  showPage(1);
+  updateNav();
+  showToast(`Preview ready — ${questions.length} questions, ${totalPages} pages`);
+}
+
+function showPage(n) {
+  document.querySelectorAll('.pdf-page').forEach(p => p.classList.remove('active'));
+  const target = document.querySelector(`.pdf-page[data-page="${n}"]`);
+  if (target) {
+    target.classList.add('active');
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function changePage(dir) {
+  currentPage = Math.max(1, Math.min(totalPages, currentPage + dir));
+  showPage(currentPage);
+  updateNav();
+}
+
+function updateNav() {
+  document.getElementById('pageIndicator').textContent = totalPages > 0 ? `${currentPage} / ${totalPages}` : '— / —';
+  document.getElementById('prevBtn').disabled = currentPage <= 1;
+  document.getElementById('nextBtn').disabled = currentPage >= totalPages;
+}
+
+// ══════════════════════════════════════════════════
+//  DOWNLOAD PDF
+// ══════════════════════════════════════════════════
+async function downloadPDF() {
+  if (parsedItems.length === 0) { generatePreview(); return; }
+
+  const { jsPDF } = window.jspdf;
+  const showAns = document.getElementById('showAnswers').checked;
+  const title   = document.getElementById('testTitle').value || 'MCQ Test';
+  const meta = {
+    subject:   document.getElementById('subject').value || '',
+    classExam: document.getElementById('classExam').value || '',
+    time:      document.getElementById('timeAllowed').value || '',
+    marks:     document.getElementById('maxMarks').value || ''
+  };
+  const qPerPage = parseInt(document.getElementById('qPerPage').value);
+
+  const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const W = 210, H = 297;
+  const marginL = 20, marginR = 20, marginT = 20, marginB = 25;
+  const contentW = W - marginL - marginR;
+
+  const chunks = chunkItems(parsedItems, qPerPage);
+  const totalPagesCount = chunks.length;
+
+  const setFont = (type='normal', size=10) => {
+    if (type === 'bold')        pdf.setFont('helvetica', 'bold');
+    else if (type === 'italic') pdf.setFont('helvetica', 'italic');
+    else                        pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(size);
+  };
+
+  for (let pi = 0; pi < chunks.length; pi++) {
+    if (pi > 0) pdf.addPage();
+    const pageItems = chunks[pi];
+    let y = marginT;
+
+    // ── Page 1 header ──
+    if (pi === 0) {
+      setFont('bold', 15);
+      pdf.setTextColor(13, 13, 13);
+      pdf.text(title, marginL, y);
+      y += 6;
+
+      pdf.setDrawColor(13, 13, 13);
+      pdf.setLineWidth(0.5);
+      pdf.line(marginL, y, W - marginR, y);
+      y += 5;
+
+      setFont('normal', 8);
+      pdf.setTextColor(100, 100, 100);
+      const metaParts = [
+        meta.subject,
+        meta.classExam,
+        meta.time  ? 'Time: ' + meta.time : '',
+        meta.marks ? 'Max Marks: ' + meta.marks : ''
+      ].filter(Boolean);
+      pdf.text(metaParts.join('   ·   '), marginL, y);
+      y += 10;
+    }
+
+    // ── Render each item ──
+    for (const item of pageItems) {
+
+      // ── Section divider ──
+      if (item.type === 'section') {
+        y += 4;
+        // Draw left line
+        pdf.setDrawColor(180, 180, 176);
+        pdf.setLineWidth(0.4);
+        const textW = pdf.getStringUnitWidth(item.title) * 7.5 / pdf.internal.scaleFactor;
+        const lineGap = 4;
+        const midX = W / 2;
+        const halfText = textW / 2 + lineGap;
+        pdf.line(marginL, y, midX - halfText, y);
+        pdf.line(midX + halfText, y, W - marginR, y);
+
+        // Section title text
+        setFont('bold', 7.5);
+        pdf.setTextColor(120, 120, 120);
+        pdf.text(item.title.toUpperCase(), midX, y + 0.8, { align: 'center' });
+
+        y += 6;
+        pdf.setTextColor(13, 13, 13);
+        continue;
+      }
+
+      // ── Question ──
+      setFont('bold', 9);
+      pdf.setTextColor(13, 13, 13);
+      const qFull  = `Q${item.num}. ${item.q}`;
+      const qLines = pdf.splitTextToSize(qFull, contentW);
+      pdf.text(qLines, marginL, y);
+      y += qLines.length * 5 + 2;
+
+      setFont('normal', 8.5);
+      pdf.setTextColor(50, 50, 50);
+      const colW = contentW / 2 - 4;
+      for (let oi = 0; oi < item.options.length; oi++) {
+        const opt     = item.options[oi];
+        const xOff    = oi % 2 === 0 ? marginL : marginL + contentW / 2;
+        const optText = `${opt.letter}) ${opt.text}`;
+        const optLines= pdf.splitTextToSize(optText, colW);
+        pdf.text(optLines, xOff, y);
+        if (oi % 2 === 1 || oi === item.options.length - 1) y += optLines.length * 4.5;
+      }
+      y += 1;
+
+      if (showAns && item.answer) {
+        setFont('bold', 8);
+        pdf.setTextColor(22, 163, 74);
+        pdf.text(`Answer: ${item.answer}`, marginL, y);
+        y += 5;
+        pdf.setTextColor(13, 13, 13);
+      }
+      y += 6;
+    }
+
+    // ── Footer ──
+    pdf.setDrawColor(200, 200, 196);
+    pdf.setLineWidth(0.3);
+    pdf.line(marginL, H - marginB + 2, W - marginR, H - marginB + 2);
+    setFont('normal', 7.5);
+    pdf.setTextColor(150, 150, 150);
+    pdf.text('@thunderstudy', marginL, H - marginB + 8);
+    pdf.text(`Page ${pi + 1} of ${totalPagesCount}`, W - marginR, H - marginB + 8, { align: 'right' });
+  }
+
+  const fileName = title.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '_mcq.pdf';
+  pdf.save(fileName);
+  showToast('PDF downloaded!');
+}
+
+// ══════════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════════
+window.addEventListener('load', () => {
+  document.getElementById('mcqInput').value = SAMPLE_STANDARD;
+  generatePreview();
+});
+
+document.addEventListener('change', (e) => {
+  if (['showAnswers', 'qPerPage'].includes(e.target.id) && parsedItems.length) {
+    generatePreview();
+  }
+});
+</script>
+
+</body>
+</html>
